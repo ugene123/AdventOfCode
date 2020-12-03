@@ -1,6 +1,6 @@
 import os
 
-def part1(rows: list, rowLength: int, over: int, down: int) -> int:
+def part1(rows: list, rowLength: int, over: int, down: int):
   lastX, lastY, trees = 0, 0, 0
   while lastY < len(rows):
     if rows[lastY][lastX] == '#':
@@ -11,7 +11,7 @@ def part1(rows: list, rowLength: int, over: int, down: int) -> int:
       lastX -= rowLength 
   return trees
 
-def part2(rows: list, rowLength: int, slopes: list) -> int:
+def part2(rows: list, rowLength: int, slopes: list):
   total = 1
   for x, y in slopes:
     total *= part1(rows, rowLength, x, y)
