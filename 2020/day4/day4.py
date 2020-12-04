@@ -11,7 +11,6 @@ def containsReqs(psswrd: str):
 def isValid(psswrd: str):
   if not containsReqs(psswrd):
     return False
-
   parts = [x.split(':') for x in psswrd.split()]
   for key, value in parts:
     if key == 'byr':
@@ -24,16 +23,16 @@ def isValid(psswrd: str):
       if not (int(value) >= 2020 and int(value) <= 2030):
         return False
     if key == 'hgt':
-      if 'cm' in value:
-        if not (int(value.strip('cm')) >= 150 and int(value.strip('cm')) <= 190):
+      if re.match('^\d{3}(cm)$', value ) != None:
+        if not (int(value.strip('cm')) >= 150 and int(value.strip('cm')) <= 193):
           return False
-      elif 'in' in value:
+      elif re.match('^\d{2}(in)$', value ) != None: 
         if not (int(value.strip('in')) >= 59 and int(value.strip('in')) <= 76):
           return False
       else:
         return False
     if key == 'hcl':
-      if re.match('^#([abcdef0123456789]{6})', value) == None:
+      if re.match('^#([abcdef0123456789]{6})$', value) == None:
         return False
     if key == 'ecl':
       if re.match('^(amb|blu|brn|gry|grn|hzl|oth)$', value) == None:
@@ -78,8 +77,6 @@ if __name__ == "__main__":
   here = os.path.dirname(os.path.abspath(__file__))
   filename = os.path.join(here, 'input')
 
-  
   rows = [line for line in open(filename, 'r')]
-  
   print("Part1:", part1(rows))
   print("Part2:", part2(rows))
