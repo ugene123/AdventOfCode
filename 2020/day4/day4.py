@@ -1,8 +1,25 @@
 import os
 import re
 
-def containsReqs(psswrd: str):
-  required = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']
+required = set(['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'])
+
+def getPasswords(rows: list):
+  psswrds = []
+  start = 0
+  for i, row in enumerate(rows):
+    if row == '\n':
+      psswrd = getPassword(rows, start, i-1)
+      psswrds.append(psswrd)
+      start = i + 1
+  return psswrds
+
+def getPassword(rows, start, end):
+  psswrd = ""
+  for i in range(start, end + 1):
+    psswrd += ' ' + rows[i].replace('\n', ' ')
+  return psswrd
+
+def containsReqs(psswrd: str):  
   for r in required:
     if r not in psswrd:
       return False
@@ -42,34 +59,17 @@ def isValid(psswrd: str):
         return False
   return True
 
-def getPasswords(rows: list):
-  indexes = []
-  start = 0
-  for i, row in enumerate(rows):
-    if row == '\n':
-      indexes.append((start, i - 1))
-      start = i + 1
-  return indexes
-
-def part1(rows: list):
+def part1(psswrds: list):
   valid = 0
-  passIndexes = getPasswords(rows)
-  for start, end in passIndexes:
-    psswrd = ""
-    for i in range(start, end + 1):
-      psswrd += ' ' + rows[i].replace('\n', ' ')
-    if containsReqs(psswrd):
+  for p in psswrds:
+    if containsReqs(p):
       valid += 1
   return valid
 
-def part2(rows: list):
+def part2(psswrds: list):
   valid = 0
-  passIndexes = getPasswords(rows)
-  for start, end in passIndexes:
-    psswrd = ""
-    for i in range(start, end + 1):
-      psswrd += ' ' + rows[i].replace('\n', ' ')
-    if isValid(psswrd):
+  for p in psswrds:
+    if isValid(p):
       valid += 1
   return valid
 
@@ -78,5 +78,7 @@ if __name__ == "__main__":
   filename = os.path.join(here, 'input')
 
   rows = [line for line in open(filename, 'r')]
-  print("Part1:", part1(rows))
-  print("Part2:", part2(rows))
+  psswrds = getPasswords(rows)
+
+  print("Part1:", part1(psswrds))
+  print("Part2:", part2(psswrds))
