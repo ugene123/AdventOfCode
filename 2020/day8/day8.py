@@ -9,8 +9,7 @@ def getJmpNopRows(rows: list):
   return res
   
 def part1(rows: list):
-  ran = []
-  i, total = 0, 0
+  ran, i, total = [], 0, 0
   while True:
     if i in ran: 
       return (total, False) # Inf loop, prg failed
