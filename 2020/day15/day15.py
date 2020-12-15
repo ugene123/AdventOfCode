@@ -25,7 +25,6 @@ def playGame(nums:list, turns:int):
 if __name__ == "__main__":
   here = os.path.dirname(os.path.abspath(__file__))
   filename = os.path.join(here, 'input')
-
   nums = [0,5,4,1,10,14,7]
   print("Part1:", playGame(nums, 2020))
   print("Part2:", playGame(nums, 30000000))
