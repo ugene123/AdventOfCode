@@ -45,7 +45,7 @@ def part1(rows:list):
 
 def part2(tickets:list, rules:dict, myTicket:list):
   # Find rules matched per column
-  order = {}
+  colRules = {}
   for i in range(0, len(tickets[0])):
     col = [t[i] for t in tickets]
     for name, rule in rules.items():
@@ -57,24 +57,24 @@ def part2(tickets:list, rules:dict, myTicket:list):
         else:
           ruleBroken = True   
       if not ruleBroken:
-        if order.get(i) == None:
-          order[i] = [name]
+        if colRules.get(i) == None:
+          colRules[i] = [name]
         else:
-          order[i].append(name)
+          colRules[i].append(name)
   #  Reduce only one matched rule per col by assigning rule to col if it is the only rule matched
   solved = []
   while(True):
-    for x, currRules in order.items():
+    for x, currRules in colRules.items():
       rule = currRules[0]
       if len(currRules) == 1 and rule not in solved:
-        for y, compareRules in order.items():
+        for y, compareRules in colRules.items():
           if x != y and rule in compareRules:
-            order[y].remove(rule)
+            colRules[y].remove(rule)
         solved.append(rule)
     if len(solved) == len(rules):
       break
   # Get cols with 'departure' in ruleName and compute product from vals in myTicket
-  depCols =[i for i, name in order.items() if 'departure' in name[0]]
+  depCols =[i for i, name in colRules.items() if 'departure' in name[0]]
   depVals = [v for i, v in enumerate(myTicket) if i in depCols]
   return prod(depVals)
 
